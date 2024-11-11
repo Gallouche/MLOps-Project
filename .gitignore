@@ -11,30 +11,8 @@ __pycache__/
 *.eggs/
 *.log
 
-## Virtual environment folders
-venv/
-.env/
-*.env
 
-## Dependency-related files
-pip-log.txt
 
-## Cache and build files
-build/
-dist/
-*.egg
-*.manifest
-*.spec
-
-## Package manager files
-*.log
-.cache/
-
-## Editor/IDE-specific files
-.vscode/
-.idea/
-*.swp
-
-## OS-specific files
-.DS_Store
-Thumbs.db
+# airflow docker image
+airflow/logs
+airflow/dags/__pycache__
