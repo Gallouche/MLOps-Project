@@ -1,2 +1,40 @@
+src/datasets/
+src/experimentation/dataset/
 
-experimentation/dataset/
+## Common Python files to ignore
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.eggs/
+*.log
+
+## Virtual environment folders
+venv/
+.env/
+*.env
+
+## Dependency-related files
+pip-log.txt
+
+## Cache and build files
+build/
+dist/
+*.egg
+*.manifest
+*.spec
+
+## Package manager files
+*.log
+.cache/
+
+## Editor/IDE-specific files
+.vscode/
+.idea/
+*.swp
+
+## OS-specific files
+.DS_Store
+Thumbs.db
