@@ -15,3 +15,5 @@ __pycache__/
 # airflow docker image
 airflow/logs
 airflow/dags/__pycache__
+
+.idea

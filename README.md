@@ -3,7 +3,6 @@
 ## Installation
 
 ### Option 1: Install with Flexible Dependencies
-
 This method installs the project using the dependencies specified in `pyproject.toml`, allowing `pip` to resolve the latest compatible versions.
 
 1. **Clone the Repository**:
@@ -59,9 +58,11 @@ To add or update dependencies in your project, follow these steps:
 ```bash
 cd ./airflow
 docker-compose up
+# docker-compose up flower # start airflow and flower monitoring platform 
 ```
 
-Then you can access the Airflow UI at http://localhost:8080/
+Then you can access the Airflow UI at http://localhost:8080/  
+Then you can access the Flower UI at http://localhost:5555/  
 
 ### Create the first DAG
 
@@ -102,7 +103,10 @@ branching >> branch_a >> follow_branch_a >> join
 branching >> branch_false >> join
 ```
 
-## Airflow usefull links
+### Debug Airflow inside docker container using PyCharm
+https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#debug-airflow-inside-docker-container-using-pycharm
+
+## Airflow useful links
 https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html
 
 ## Data
