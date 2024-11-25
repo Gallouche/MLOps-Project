@@ -22,3 +22,6 @@ airflow/dags/__pycache__
 # DVC
 data/raw
 data/prepared
+
+# results
+/model
