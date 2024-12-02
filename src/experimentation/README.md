@@ -7,6 +7,7 @@ This is a basic test to visualize an image and its annotations.
 ## convert_data.ipynb
 
 This notebook allows to convert the annotations from a JSON file to a txt file in the format required by YOLO and generate a dictionary of classes.
+dict_classes.json contains the classes of the objects in the dataset
 The YOLO format is as follows:
 ```
 <object-class> <x> <y> <width> <height>
@@ -37,7 +38,7 @@ Generate a dataset.yaml file containing the information about the data needed fo
 
 ## yolo.ipynb
 
-Ce notebook permet de lancer des entrainements de YOLO en utilisant la librairie ultralytics.
+This notebook allows you to launch YOLO training using the ultralytics library.
 
 
 
