@@ -17,3 +17,13 @@ __pycache__/
 # airflow docker image
 airflow/logs
 airflow/dags/__pycache__
+
+# Pycharm interpreter
+.idea
+
+# DVC
+data/raw
+data/prepared
+
+# results
+/model
