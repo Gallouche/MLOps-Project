@@ -1,5 +1,11 @@
 # MLOps project
 
+## Project description
+
+This project is a simple workflow to demonstrate learning about MLOps. It will use Airflow to orchestrate the training of a Yolo model with simulated continuous leaning.
+
+![diag](project-diagram.png)
+
 ## Installation
 
 ### Option 1: Install with Flexible Dependencies
@@ -53,7 +59,6 @@ To add or update dependencies in your project, follow these steps:
    pip freeze > requirements.txt
    ```
 
-
 ### Start the Airflow docker image
 
 ```bash
@@ -103,6 +108,7 @@ branching >> branch_false >> join
 ```
 
 ## Airflow usefull links
+
 https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html
 
 ## Data

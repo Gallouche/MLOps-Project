@@ -1,4 +1,6 @@
 src/experimentation/dataset/
+venv/
+.DS_Store
 
 ## Common Python files to ignore
 __pycache__/
