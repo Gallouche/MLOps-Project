@@ -7,10 +7,22 @@ Here are instructions to prepare the DVC pipeline and track data.
 pip install dvc
 ```
 
+## Create a `params.yml`
+**e.g.: :**
+```yaml
+prepare:
+  seed: 77
+
+train:
+  seed: 77
+  lr: 0.001
+```
+
 ## Initialization of DVC
 ``shell
 dvc init
 ``
+
 
 ## Run the preparation of data
 ```shell
@@ -58,7 +70,6 @@ dvc stage add -n evaluate \
     --plots evaluation/plots/training_history.png \
     python3.11 src/evaluate.py model data/prepared
 ```
-
 
 # Show dag
 ```shell

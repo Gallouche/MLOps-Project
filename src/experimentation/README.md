@@ -1,3 +1,31 @@
+***Notice : before running this code be sure to have***
+---
+**Needs**  
+* **mtsd_fully_annotated_annotation.zip** from [**Mapillary trafic sign dataset**](https://www.mapillary.com/dataset/trafficsign)
+    * contains the **annotations** for each image `.json` under `/annotations` folder.
+        * Image annotation names are the same as image names, except for their extensions, which differ: `.json` and `.jpg`. **E.g.:**, `picture.json → picture.jpg`.
+    * contains the **splits** for each **set** under `/splits` : `train.txt`, `test.txt` & `val.txt` 
+* **mtsd_fully_annotated_images.val.zip** from [**Mapillary trafic sign dataset**](https://www.mapillary.com/dataset/trafficsign)
+    * contains the validation images in `.jpg` under the `/images`folder. 
+
+Thoses data must be place under `/src/datasets` as described below.
+```
+src/ 
+ └── datasets/ 
+      ├── images/
+      ├── splits/
+      └── annotations/
+```
+
+***NotaBene:*** As the complete dataset is enormous we will use only the **validation set** `val.txt` splitted in train, validation & test set. 
+
+# Roadmap
+
+1.  *convert_data.ipynb :*  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo` 
+2.  *split_data.ipynb :* Split the set in 3 sets - train, val(validation) & test sets `/src/datasets/dataset/{train,test,val}/{images,labels}`
+3.  *yolo.ipynb :* ***[ToDo complete here] The YOLO model***
+
+
 # Notebook explaining
 
 ## read_data.ipynb
