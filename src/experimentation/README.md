@@ -22,9 +22,9 @@ src/
 # Data preprocessing
 # Roadmap
 
-1.  *convert_data.ipynb :*  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo` 
-2.  *split_data.ipynb :* Split the set in 3 sets - train, val(validation) & test sets `/src/datasets/dataset/{train,test,val}/{images,labels}`
-3.  *yolo.ipynb :* ***[ToDo complete here] The YOLO model***
+1.  `convert_data.ipynb` :  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo` 
+2.  `split_data.ipynb` : Split the set in 3 sets - train, val(validation) & test sets `/src/datasets/dataset/{train,test,val}/{images,labels}`
+3.  `yolo.ipynb` : ***[ToDo complete here] The YOLO model***
 
 
 # Notebook explanations
@@ -48,7 +48,8 @@ where:
 - `<x> <y> <width> <height>` are the coordinates of the center of the bounding box and its width and height.
 - The coordinates are normalized with respect to the image size.
 
-***needs to run this code :*** `annotations` from the **mtsd_fully_annotated_annotation.zip**  
+***needs to run this code :*** 
+* `annotations` from the **mtsd_fully_annotated_annotation.zip**  
 ***output :***
 * `label_dict.json` : labels as categorical value
 * `../datasets/annotations_yolo/<*filename>.txt`: annotations in *YOLO* format stored as *.txt* file  
