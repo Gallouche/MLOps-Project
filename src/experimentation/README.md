@@ -22,7 +22,7 @@ src/
 # Data preprocessing
 # Roadmap
 
-1.  `convert_data.ipynb` :  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo` 
+1.  `convert_data.ipynb` :  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo/*` 
 2.  `split_data.ipynb` : Split the set in 3 sets - train, val(validation) & test sets `/src/datasets/dataset/{train,test,val}/{images,labels}`
 3.  `yolo.ipynb` : ***[ToDo complete here] The YOLO model***
 
@@ -74,7 +74,7 @@ dataset/
 * `label_dict.json` : 
 * images : `/datasets/images/` from the **mtsd_fully_annotated_images.val.zip**
 * `val.txt` : List of filenames that are used to create ou datasets from the `mtsd_v2_fully_annotated\splits`
-* yolo's annotation labels : generated with the `convert_data.ipynb` script and stored in  /datasets/annotations_yolo/`
+* yolo's annotation labels : generated with the `convert_data.ipynb` script and stored in  `/datasets/annotations_yolo/*`
 
 ***output :***
 * `dataset.yaml` : file containing the information about the data needed for *YOLO*.
