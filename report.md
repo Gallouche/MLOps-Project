@@ -48,11 +48,11 @@ Image example:
 
 ### Task - Give metrics
 
-## Advantage of using AirFlow pipeline
+## Added value of using an AirFlow pipeline
 
 This use case is an example of using a pipeline to automate the process of training a model. It allows to see the different advantages of using this type of tool.
 
-The advantages of using a pipeline are as follows:
+The advantages of using such pipelines are as follows:
 
 - Automation of the process: all steps are automated and traceable. It is not necessary to manually run scripts or execute commands for each step. There is therefore no risk of human error.
 - Repeatability: the pipeline can be restarted at any time to reproduce the results. This allows to test different configurations and compare the results.
@@ -61,10 +61,16 @@ The advantages of using a pipeline are as follows:
 - Modularity: the pipeline is composed of different tasks that can be reused for other projects. It is also possible to modify a task without affecting the others in order to test different configurations.
 - Scalability: the pipeline can be scaled to handle large datasets and complex workflows. It can be run on a single machine or distributed across multiple machines to speed up the process.
 
-The main disadvantage of using an AirFlow pipeline is the time required to set it up. It is necessary to understand how AirFlow works, how to create a pipeline and how to configure the different tasks. This can take time and requires technical skills.
+However, we also noticed some disadvantages:
+- Complexity: setting up the pipeline can be complex. It is necessary to understand how AirFlow works, how to create a pipeline and how to configure the different tasks. This can take time and requires technical skills.
+- Learning curve: using AirFlow requires knowledge of AirFlow and Directed Acyclic Graphs (DAGs). It is necessary to understand how to create a DAG, how to define tasks and dependencies between them. This can be difficult for people who are not familiar with these concepts.
+- Not useful for small projects: using such a pipeline can be oversized and complicated to set up for a small project. It would take more time to configure the pipeline than to complete the project manually.
+
+There is therefore a trade-off between automating the process and the complexity of setting up the pipeline. However, for a large-scale project, using a pipeline is a wise choice to save time and avoid human errors.
 
 ## Difficulties encountered
 
-FF
+- organisation à 5
+- 
 
 ## Conclusion
