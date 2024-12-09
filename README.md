@@ -4,7 +4,7 @@
 
 This project is a simple workflow to demonstrate learning about MLOps. It will use Airflow to orchestrate the training of a Yolo model with simulated continuous leaning.
 
-![diag](project-diagram.png)
+![diag](images/project-diagram.png)
 
 ## Installation
 
