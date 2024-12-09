@@ -1,0 +1,10 @@
+service: 'service:YoloV8'
+labels:
+  owner: jdkuenzi
+  stage: demo
+include:
+ - service.py
+python:
+  requirements_txt: './service_requirements.txt'
+docker:
+  python_version: '3.11'
