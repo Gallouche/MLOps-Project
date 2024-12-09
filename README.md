@@ -60,9 +60,12 @@ To add or update dependencies in your project, follow these steps:
 
 ### Start the Airflow docker image
 
+mettre tout les packages dans le requirements.txt lors du build de l'image docker
+l'image aura tout les packages necessaires pour lancer les dags
+
 ```bash
 cd ./airflow
-docker-compose up
+docker-compose up --build -d
 # docker-compose up flower # start airflow and flower monitoring platform 
 ```
 
