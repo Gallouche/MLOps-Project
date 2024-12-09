@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mse-machledata",
+  "private_key_id": "48568dcc57f213dbf61f82f07fd4aed204fa5366",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8W5+ayLHq0szn\nmtDFNzemglONqTc/M4L1PPnETw9O+7LEFYM65W/3fcn5v6qmrWJz6bT4o59IHfxR\nNSVBGOkO98oaMY8oXgcs9PJ0BHzxs4biC1PIpdVMKRC/xEVYf1xeAGTZRvS5w6AY\n3mhYzuxiZxLVEZ/OikBr/LYEOoHfAdeD0NJaZZcYzrvZbX5mmIGRDCWbm8LMxCtD\npJnfF6aw+XHOBZAM3FphpYk07gZXv0uIwD99ajI5lnJNgWoIhARJhxJDgzWjZTge\nqOiWY1Zq7SjdS4Z2dZFLhAneW7tUuHhlMGNoZDNvSQvtpfJqBOOItzfbwUGPD2d2\nrR3n1AWJAgMBAAECggEAFHYSjDathyAPpMAvWiEhsTualnqxlvLCUOAnFMFu3Qpg\nFMduekUmyNiYCoKc597RYVybrV/e429oc6zlh2EMnjTiNj64ea7fMi3Isbw0E3CI\nYEFRQGxtU4jpeh941gB92PNLgUPhPVXILDNq2+zchmMCi3VO6hmgHmr1Hdf6OC6U\nEChbnoriEDIuyP/ABsjVMO4Xt4/y+axODlFYMauC3QfL2rDqMf6JxYeq2Cw5c1v8\nsRd7qmKHWvSWQjMIsCoqwSaNcibYfeQyDspxtNAfEImGrkna/MttMvQedX5tFQv5\nKPD6L2klr5z7f7V5rYqnn+tyul9Tug2JDXopCkkSZQKBgQDhoi3L6eTpUkFulXXj\nZQZfcLGNEZHtBNN6+zwcwW57oHlz6tY2KnPzpLQeFiI2RpAGdXQP56Fw1gMzurqu\nuenwHQIgiCDvv9ym/gWtWbjWNyMd2u0TZvPP9QgXzkAIoYoelx179Ktb01DA1wkj\ncekst39ZiAzE4C8tLlAYxTm31QKBgQDVtS0yL93V251wZAhA5qkji9oFDGa3Jg+2\nfYXgLEeaCC3CDWixCvzrda8NSpwJeO/ok9E01LI6QZZPq6PrJvHJC2GVkjNVIsTz\n3ve8Gq6fWt0/BXpjd46OipFvIfmSA6n4SaQ33njOFroyhYT/sVsz1aErKyHqTIl5\nIRj+ieZE5QKBgQDTM3yMsA4evGkU+wATb0AM3C7GLlkatHbEWiDFheZGAEtPTtVe\ndFR/Dn+u3eb+SQSNlymhrZ63QQxUQoh1/v5UTMLt8p5p7Hy9L2/e+OoEUi4jxwY9\nMBQuZ11A80WLDrJ7udXWbopr9JxVNbOPIxQxUD37b1cMfhCKyRweY5aIVQKBgQDT\nTfECTpHpgtyI5F/EzE0w+Hb5xulI7jlbF4HnxeCGTM/xr5B0fYjWx+XuHndqZknQ\njVeuBSC0uWUGIZBSUo9/WeGDIqve4iIbf7s0Iq3GovFf/uqkrvIlvp1OZSl/VmAZ\nP7dABpksLQyuJ5b5u0OSXQiexmciY8sKGc+83lzwgQKBgEJr89m6cbE8UYFDuF5I\n5z+uiHHNX4ryT5Cw2zQZFMBY5SUh8ZMXcfcHJHfx0GcbWRk4rSMM0UFp/+zUUrg8\n5VDo1o3v0jix5gdI5fwW6jBhg8Zlz0xUiCS0FdK90OBOyZ4+g2OZfO1v0HNuG7GB\n8hFZnWoOjjXc9QYWBPi33VP6\n-----END PRIVATE KEY-----\n",
+  "client_email": "gcp-bucket-machledata@mse-machledata.iam.gserviceaccount.com",
+  "client_id": "116588984948375659041",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcp-bucket-machledata%40mse-machledata.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
