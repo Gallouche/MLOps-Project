@@ -4,7 +4,9 @@ labels:
   stage: demo
 include:
  - service.py
+ - best.pt
 python:
   requirements_txt: './service_requirements.txt'
 docker:
   python_version: '3.11'
+  setup_script: "./setup.sh"

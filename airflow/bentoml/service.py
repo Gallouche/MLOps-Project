@@ -5,7 +5,8 @@ from PIL.Image import Image
 from pydantic import Field
 import bentoml
 from pathlib import Path
-import json
+
+LOCAL_WEIGHTS_PATH = "best.pt"
 
 @bentoml.service(name="YoloV8")
 class YoloV8:
@@ -15,7 +16,8 @@ class YoloV8:
         # self.preprocess = self.bento_model.custom_objects["preprocess"]
         # self.postprocess = self.bento_model.custom_objects["postprocess"]
         # self.model = self.bento_model.load_model()
-        self.model = YOLO('yolov8n.pt')
+
+        self.model = YOLO(LOCAL_WEIGHTS_PATH)
 
     @bentoml.api()
     def predict(

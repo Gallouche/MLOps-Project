@@ -1,0 +1,5 @@
+ultralytics>=8.1
+pillow>=11.0
+matplotlib>=3.9
+bentoml>=1.0
+pydantic
