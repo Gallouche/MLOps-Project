@@ -7,6 +7,7 @@ import os
 from google.cloud import storage
 
 # Constants
+DOCKER_CONTAINER_NAME = "bentoml_yolo_v8"
 BUCKET_NAME = "mse_mapillary"
 WEIGHTS_BLOB = "trained_model/weights/best.pt"
 SERVICE_ACCOUNT_JSON = "/opt/airflow/dags/mse-machledata-key.json"
@@ -70,11 +71,21 @@ with DAG(
         dag=dag,
     )
 
+    stop_bentoml_container_task = BashOperator(
+        task_id="stop_container",
+        bash_command=f"""
+        if [ $(docker ps -q -f name={DOCKER_CONTAINER_NAME}) ]; then
+            docker stop {DOCKER_CONTAINER_NAME};
+        fi
+        """,
+    )
+
     run_bentoml_container_task = DockerOperator(
         task_id='run_bentoml_container',
         image="yolo_v8:latest",
         auto_remove=True,  # Supprime automatiquement le container après exécution
         docker_url="unix://var/run/docker.sock",
+        container_name=DOCKER_CONTAINER_NAME,
         #docker_url='TCP://docker-socket-proxy:2375',
         network_mode="bridge",
         command="serve",
@@ -82,4 +93,4 @@ with DAG(
         dag=dag,
     )
 
-    download_weights_task >> build_bentoml_task >> containerize_bentoml_task >> run_bentoml_container_task
+    download_weights_task >> build_bentoml_task >> containerize_bentoml_task >> stop_bentoml_container_task >> run_bentoml_container_task
