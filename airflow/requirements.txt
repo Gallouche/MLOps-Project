@@ -1,2 +1,3 @@
 PyYAML
 ultralytics
+bentoml
