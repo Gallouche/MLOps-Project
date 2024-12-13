@@ -65,7 +65,7 @@ with DAG(
 
     containerize_bentoml_task = BashOperator(
         task_id='containerize_bentoml',
-        bash_command='bentoml containerize yolo_v8:latest',
+        bash_command='bentoml containerize yolo_v8:latest -t yolo_v8:latest',
         #bash_command='echo "Working directory: $(pwd)" && ls -l',
         dag=dag,
     )
