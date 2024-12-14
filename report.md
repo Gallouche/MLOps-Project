@@ -64,13 +64,14 @@ The advantages of using such pipelines are as follows:
 However, we also noticed some disadvantages:
 - Complexity: setting up the pipeline can be complex. It is necessary to understand how AirFlow works, how to create a pipeline and how to configure the different tasks. This can take time and requires technical skills.
 - Learning curve: using AirFlow requires knowledge of AirFlow and Directed Acyclic Graphs (DAGs). It is necessary to understand how to create a DAG, how to define tasks and dependencies between them. This can be difficult for people who are not familiar with these concepts.
-- Not useful for small projects: using such a pipeline can be oversized and complicated to set up for a small project. It would take more time to configure the pipeline than to complete the project manually.
+- Not useful for small projects: using such a pipeline can be oversize and complicated to set up for a small project. It would take more time to configure the pipeline than to complete the project manually.
 
 There is therefore a trade-off between automating the process and the complexity of setting up the pipeline. However, for a large-scale project, using a pipeline is a wise choice to save time and avoid human errors.
 
 ## Difficulties encountered
 
-- organisation à 5
-- 
+Among the difficulties encountered, we can mention the distribution of tasks among the 5 members of the group. Many tasks required coordination between the members to avoid conflicts between the different parts of the project. In addition, understanding how AirFlow works was difficult. The learning curve is quite long and it took time to understand how to implement the different tasks. Many elements are not intuitive and it takes time to understand how to configure them correctly.
+
+There were also several problems with the Airflow documentation. Many points are difficult to find and when they are found, the examples provided are not always clear. For example, to do branching in a DAG, the example provided is very basic and does not allow to understand how to do more complex branching. It was necessary to browse the documentation for a long time to understand that the default value of a parameter had to be changed for the DAG to work correctly. A similar problem was encountered with the management of permissions for the different services used. It is done in an unusual and unintuitive way in AirFlow, and the documentation is also unclear on this point. As a result, we took time to configure the permissions correctly.
 
 ## Conclusion
