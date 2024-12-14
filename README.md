@@ -78,6 +78,16 @@ docker compose up --build -d
 Then you can access the Airflow UI at http://localhost:8080/  
 Then you can access the Flower UI at http://localhost:5555/  
 
+### Stop and clean all
+Pour stopper tout les containers et clean les images et les volumes:
+
+```bash
+cd ./airflow
+docker compose down --volumes --rmi all
+```
+
+Vérifiez si l'image `yolo_v8:latest` existe `docker ps`. Si oui supprimez là `docker rmi yolo_v8:latest`
+
 ### Troubleshoothing
 
 `Sous Linux` : il peut être nécessaire de changer la variable `AIRFLOW_UID` qui se trouve dans `airflow/.env`. Il faut également créer les répertoires de base pour en être propriétaire s'ils n'existent pas déjà :
