@@ -86,7 +86,19 @@ cd ./airflow
 docker compose down --volumes --rmi all
 ```
 
-Vérifiez si l'image `yolo_v8:latest` existe `docker ps`. Si oui supprimez là `docker rmi yolo_v8:latest`
+Stoper le container `bentoml_yolo_v8` s'il run toujous :
+
+```bash
+docker stop bentoml_yolo_v8
+docker rm bentoml_yolo_v8
+```
+
+Vérifiez si l'image `yolo_v8:latest` existe encore, si oui supprimez là :
+
+```bash
+docker ps
+docker rmi yolo_v8:latest
+```
 
 ### Troubleshoothing
 
