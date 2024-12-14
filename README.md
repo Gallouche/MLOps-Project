@@ -71,6 +71,8 @@ Docker Compose version v2.27.0-desktop.2
 #### Linux
 
 ```bash
+Docker version 27.3.1, build ce12230
+Docker Compose version v2.29.7
 ```
 
 ### Start the Airflow docker image
