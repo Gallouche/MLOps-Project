@@ -57,6 +57,21 @@ To add or update dependencies in your project, follow these steps:
    ```bash
    pip freeze > requirements.txt
    ```
+### Docker & Docker compose version
+
+Pour pouvoir run la pipeline il faut avoir au minimum comme version docker
+
+#### Windows
+
+```bash
+Docker version 26.1.1, build 4cf5afa
+Docker Compose version v2.27.0-desktop.2
+```
+
+#### Linux
+
+```bash
+```
 
 ### Start the Airflow docker image
 
