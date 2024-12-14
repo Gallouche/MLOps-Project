@@ -38,15 +38,46 @@ Image example:
 
 ## Pipeline description
 
-### Task - preprocessing
+### Task - Download data
 
-### Task - Upload preprocessed files - if in cloud
+### Task - Remove old metrics
 
-### Task - Retrain the model
+### Task - Preprocessing
 
-### Task - Predict using the model
+For training a YOLO model, it is necessary to have annotations in a specific format. Yolo uses the following format in a txt file:
+```
+<object-class> <x> <y> <width> <height>
+```
+Where:
+- `<object-class>` is the index of the object's class
+- `<x> <y> <width> <height>` are the coordinates of the center of the bounding box and its width and height.
+- The coordinates are normalized with respect to the image size.
 
-### Task - Give metrics
+The annotations of the road signs are provided as bounding boxes in a JSON file. The bounding boxes are defined by the minimum and maximum value of the x and y coordinates. These values are not normalized and a lot of unnecessary information is present. It is therefore necessary to convert these annotations into a format usable by YOLO.
+
+### Task - Train YOLOv8
+
+### Task - Upload model
+
+### Task - Trigger deployment
+
+### Task - Download weights
+
+### Task - Bentoml
+
+#### Task - Build bentoml
+
+#### Task- Check bentoml container
+
+#### Task - Stop bentoml container
+
+#### Task - Check docker image
+
+#### Task - Containerize bentoml
+
+#### Task - Run bentoml container
+
+- TODO : screen of the API + predicted image
 
 ## Added value of using an AirFlow pipeline
 
