@@ -57,6 +57,21 @@ To add or update dependencies in your project, follow these steps:
    ```bash
    pip freeze > requirements.txt
    ```
+### Docker & Docker compose version
+
+Pour pouvoir run la pipeline il faut avoir au minimum comme version docker
+
+#### Windows
+
+```bash
+Docker version 26.1.1, build 4cf5afa
+Docker Compose version v2.27.0-desktop.2
+```
+
+#### Linux
+
+```bash
+```
 
 ### Start the Airflow docker image
 
@@ -101,7 +116,7 @@ docker rmi yolo_v8:latest
 ```
 
 ### Troubleshoothing
-
+#### Linux
 `Sous Linux` : il peut être nécessaire de changer la variable `AIRFLOW_UID` qui se trouve dans `airflow/.env`. Il faut également créer les répertoires de base pour en être propriétaire s'ils n'existent pas déjà :
 ```bash
 cd ./airflow
@@ -109,6 +124,9 @@ mkdir -p ./dags ./logs ./plugins ./config
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
 
+Si l'erreur `Error: [bentoml-cli] containerize failed: Backend docker is not healty` survient dans la tache `containerize_bentoml` il faut décommenter la ligne `group_add` dans le `docker-compose.yaml` et ajouter le numéro du groupe docker de votre system `cat /etc/group | grep docker`. Cela va vous donner une ligne sous la forme `docker:x:###:mon-user`, `###` est le numéro de groupe.
+
+#### Windows
 `Sous Windows` : si une erreur survient dans la `pipeline_serve` au moment de containerize l'image sur le script `setup.sh` :
 ```bash
 cd ./airflow/bentoml

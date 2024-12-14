@@ -79,8 +79,8 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/bentoml:/opt/airflow/bentoml
     - /var/run/docker.sock:/var/run/docker.sock # Give access to docker demon to run container from DAGs
   user: "${AIRFLOW_UID:-50000}:0"
-  group_add:
-    - 999 # Host docker group GID
+  # group_add: # Needed for Linux
+  #   - 999 # Host docker group GID
   depends_on: &airflow-common-depends-on
     redis:
       condition: service_healthy
