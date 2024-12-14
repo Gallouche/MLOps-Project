@@ -1,13 +1,15 @@
 from datetime import datetime, timedelta
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
+from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow import DAG
 import os
 from google.cloud import storage
+import subprocess
 
 # Constants
 DOCKER_CONTAINER_NAME = "bentoml_yolo_v8"
+DOCKER_IMAGE_NAME = "yolo_v8:latest"
 BUCKET_NAME = "mse_mapillary"
 WEIGHTS_BLOB = "trained_model/weights/best.pt"
 SERVICE_ACCOUNT_JSON = "/opt/airflow/dags/mse-machledata-key.json"
@@ -28,6 +30,40 @@ def download_weights_from_gcs():
     blob = bucket.blob(WEIGHTS_BLOB)
     blob.download_to_filename(LOCAL_WEIGHTS_PATH)
     print(f"Poids téléchargés depuis GCS et sauvegardés dans {LOCAL_WEIGHTS_PATH}")
+
+def check_bentoml_container():
+    """
+    Vérifie si le conteneur est actif et retourne l'ID de la branche appropriée.
+    """
+    print("Vérification du conteneur BentoML...")
+    result = subprocess.run(
+        ["docker", "ps", "-q", "-f", f"name={DOCKER_CONTAINER_NAME}"],
+        capture_output=True,
+        text=True,
+    )
+    if result.stdout.strip():
+        print(f"Conteneur {DOCKER_CONTAINER_NAME} trouvé. Arrêt nécessaire.")
+        return "stop_bentoml_container"
+    else:
+        print(f"Conteneur {DOCKER_CONTAINER_NAME} non trouvé.")
+        return "check_docker_image"
+    
+def check_docker_image():
+    """
+    Vérifie si une image Docker existe et retourne l'ID de la branche appropriée.
+    """
+    print(f"Vérification de l'image Docker '{DOCKER_IMAGE_NAME}'...")
+    result = subprocess.run(
+        ["docker", "images", "-q", DOCKER_IMAGE_NAME],
+        capture_output=True,
+        text=True,
+    )
+    if result.stdout.strip():
+        print(f"L'image Docker '{DOCKER_IMAGE_NAME}' existe.")
+        return "rm_docker_image"
+    else:
+        print(f"L'image Docker '{DOCKER_IMAGE_NAME}' n'existe pas.")
+        return "containerize_bentoml"
 
 # Default arguments
 default_args = {
@@ -64,25 +100,42 @@ with DAG(
         dag=dag,
     )
 
-    containerize_bentoml_task = BashOperator(
-        task_id='containerize_bentoml',
-        bash_command='bentoml containerize yolo_v8:latest -t yolo_v8:latest',
-        #bash_command='echo "Working directory: $(pwd)" && ls -l',
+    check_bentoml_container_task = BranchPythonOperator(
+        task_id="check_bentoml_container",
+        python_callable=check_bentoml_container,
         dag=dag,
     )
 
     stop_bentoml_container_task = BashOperator(
-        task_id="stop_container",
-        bash_command=f"""
-        if [ $(docker ps -q -f name={DOCKER_CONTAINER_NAME}) ]; then
-            docker stop {DOCKER_CONTAINER_NAME};
-        fi
-        """,
+        task_id="stop_bentoml_container",
+        bash_command=f"docker stop {DOCKER_CONTAINER_NAME}",
+        dag=dag,
+    )
+
+    check_docker_image_task = BranchPythonOperator(
+        task_id="check_docker_image",
+        trigger_rule='none_failed_or_skipped',
+        python_callable=check_docker_image,
+        dag=dag,
+    )
+
+    rm_docker_image_task = BashOperator(
+        task_id="rm_docker_image",
+        bash_command=f"docker rmi {DOCKER_IMAGE_NAME}",
+        dag=dag,
+    )
+
+    containerize_bentoml_task = BashOperator(
+        task_id='containerize_bentoml',
+        trigger_rule='none_failed_or_skipped',
+        bash_command=f'bentoml containerize yolo_v8:latest -t {DOCKER_IMAGE_NAME}',
+        #bash_command='echo "Working directory: $(pwd)" && ls -l',
+        dag=dag,
     )
 
     run_bentoml_container_task = DockerOperator(
         task_id='run_bentoml_container',
-        image="yolo_v8:latest",
+        image=f"{DOCKER_IMAGE_NAME}",
         auto_remove=True,  # Supprime automatiquement le container après exécution
         docker_url="unix://var/run/docker.sock",
         container_name=DOCKER_CONTAINER_NAME,
@@ -93,4 +146,7 @@ with DAG(
         dag=dag,
     )
 
-    download_weights_task >> build_bentoml_task >> containerize_bentoml_task >> stop_bentoml_container_task >> run_bentoml_container_task
+    download_weights_task >> build_bentoml_task >> check_bentoml_container_task >> [stop_bentoml_container_task, check_docker_image_task]
+    stop_bentoml_container_task >> check_docker_image_task >> [rm_docker_image_task, containerize_bentoml_task]
+    rm_docker_image_task >> containerize_bentoml_task
+    containerize_bentoml_task >> run_bentoml_container_task

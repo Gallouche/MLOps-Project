@@ -69,8 +69,29 @@ docker-compose up --build -d
 # docker-compose up flower # start airflow and flower monitoring platform 
 ```
 
+ou pour la nouvelle CLI de docker-compose
+```bash
+cd ./airflow
+docker compose up --build -d
+```
+
 Then you can access the Airflow UI at http://localhost:8080/  
 Then you can access the Flower UI at http://localhost:5555/  
+
+### Troubleshoothing
+
+`Sous Linux` : il peut être nécessaire de changer la variable `AIRFLOW_UID` qui se trouve dans `airflow/.env`. Il faut également créer les répertoires de base pour en être propriétaire s'ils n'existent pas déjà :
+```bash
+cd ./airflow
+mkdir -p ./dags ./logs ./plugins ./config
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+```
+
+`Sous Windows` : si une erreur survient dans la `pipeline_serve` au moment de containerize l'image sur le script `setup.sh` :
+```bash
+cd ./airflow/bentoml
+dos2unix setup.sh
+```
 
 ### Create the first DAG
 
