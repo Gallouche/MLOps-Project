@@ -3,7 +3,7 @@ from google.cloud import storage
 import random
 
 # Define the folder for storing downloaded files
-BUCKET_NAME = "test-upload-mlops"
+BUCKET_NAME = "mse_mapillary"
 DATASET_FOLDER = "tmp/"
 
 
@@ -62,7 +62,7 @@ def upload_new_data(SERVICE_ACCOUNT_JSON):
             for file_name in files:
                 local_path = os.path.join(root, file_name)
                 # Preserve folder structure
-                gcs_path = os.path.relpath(local_path, DATASET_FOLDER)
+                gcs_path = os.path.join("dataset", os.path.relpath(local_path, DATASET_FOLDER))
                 blob = bucket.blob(gcs_path)
                 blob.upload_from_filename(local_path)
                 print(f"Uploaded {

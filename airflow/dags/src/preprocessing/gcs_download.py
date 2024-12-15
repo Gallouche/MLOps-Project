@@ -2,7 +2,7 @@ import os
 from google.cloud import storage
 
 # Define the folder for storing downloaded files
-BUCKET_NAME = "mapillary-traffic-sign"
+BUCKET_NAME = "dataset_drop"
 DATASET_FOLDER = "tmp/"
 
 

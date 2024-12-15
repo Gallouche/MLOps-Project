@@ -121,7 +121,7 @@ with DAG(
 
     rm_docker_image_task = BashOperator(
         task_id="rm_docker_image",
-        bash_command=f"docker rmi {DOCKER_IMAGE_NAME}",
+        bash_command=f"docker rmi -f {DOCKER_IMAGE_NAME}",
         dag=dag,
     )
 

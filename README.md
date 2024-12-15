@@ -8,7 +8,7 @@ This project is a simple workflow to demonstrate learning about MLOps. It will u
 
 ### Docker & Docker compose version
 
-Pour pouvoir run la pipeline il faut avoir au minimum comme version docker
+For the pipeline to run, you must have at least the following versions of docker
 
 #### Windows
 
@@ -26,8 +26,7 @@ Docker Compose version v2.29.7
 
 ### Start the Airflow docker image
 
-mettre tout les packages dans le requirements.txt lors du build de l'image docker
-l'image aura tout les packages necessaires pour lancer les dags
+Start the Airflow docker image with the following command:
 
 ```bash
 cd ./airflow
@@ -35,7 +34,7 @@ docker-compose up --build -d
 # docker-compose up flower # start airflow and flower monitoring platform
 ```
 
-ou pour la nouvelle CLI de docker-compose
+Or for the new docker-compose CLI
 
 ```bash
 cd ./airflow
@@ -47,21 +46,21 @@ Then you can access the Flower UI at http://localhost:5555/
 
 ### Stop and clean all
 
-Pour stopper tout les containers et clean les images et les volumes:
+For stop all containers and clean images and volumes:
 
 ```bash
 cd ./airflow
 docker compose down --volumes --rmi all
 ```
 
-Stoper le container `bentoml_yolo_v8` s'il run toujous :
+Stop the container `bentoml_yolo_v8` if it is still running:
 
 ```bash
 docker stop bentoml_yolo_v8
 docker rm bentoml_yolo_v8
 ```
 
-Vérifiez si l'image `yolo_v8:latest` existe encore, si oui supprimez là :
+Verify if the image `yolo_v8:latest` still exists, if so delete it:
 
 ```bash
 docker ps
@@ -72,7 +71,7 @@ docker rmi yolo_v8:latest
 
 #### Linux
 
-`Sous Linux` : il peut être nécessaire de changer la variable `AIRFLOW_UID` qui se trouve dans `airflow/.env`. Il faut également créer les répertoires de base pour en être propriétaire s'ils n'existent pas déjà :
+`Under Linux` : it may be necessary to change the `AIRFLOW_UID` variable in `airflow/.env`. It is also necessary to create the basic directories to be the owner if they do not already exist:
 
 ```bash
 cd ./airflow
@@ -80,54 +79,15 @@ mkdir -p ./dags ./logs ./plugins ./config
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
 
-Si l'erreur `Error: [bentoml-cli] containerize failed: Backend docker is not healty` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` il faut décommenter la ligne `group_add` dans le `docker-compose.yaml` et ajouter le numéro du groupe docker de votre system `cat /etc/group | grep docker`. Cela va vous donner une ligne sous la forme `docker:x:###:mon-user`, `###` est le numéro de groupe.
+If the error `Error: [bentoml-cli] containerize failed: Backend docker is not healty` occurs in the `pipeline_serve` in the `containerize_bentoml` task, you must uncomment the `group_add` line in the `docker-compose.yaml` and add the docker group number of your system `cat /etc/group | grep docker`. This will give you a line in the form `docker:x:###:my-user`, `###` is the group number.
 
 #### Windows
 
-`Sous Windows` : si une erreur `INFO - #18 ERROR: process "/bin/sh -c /home/bentoml/bento/env/docker/setup_script" did not complete successfully: exit code: 127` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` :
+`Under Windows` : if an error `INFO - #18 ERROR: process "/bin/sh -c /home/bentoml/bento/env/docker/setup_script" did not complete successfully: exit code: 127` occurs in the `pipeline_serve` in the `containerize_bentoml` task:
 
 ```bash
 cd ./airflow/bentoml
 dos2unix setup.sh
-```
-
-### Create the first DAG
-
-Inside the dags folder you can create the py files that define the DAGs. Then refresh the Airflow UI and you will see the DAGs there.
-
-```python
-import pendulum
-
-from airflow.decorators import task
-from airflow.models import DAG
-from airflow.operators.empty import EmptyOperator
-
-dag = DAG(
-    dag_id="branch_hello_world",
-    schedule="@once",
-    start_date=pendulum.datetime(2024, 11, 12, tz="UTC"),
-)
-
-run_this_first = EmptyOperator(task_id="run_this_first", dag=dag)
-
-
-@task.branch(task_id="branching")
-def do_branching():
-    return "branch_a"
-
-
-branching = do_branching()
-
-branch_a = EmptyOperator(task_id="branch_a", dag=dag)
-follow_branch_a = EmptyOperator(task_id="follow_branch_a", dag=dag)
-
-branch_false = EmptyOperator(task_id="branch_false", dag=dag)
-
-join = EmptyOperator(task_id="join", dag=dag)
-
-run_this_first >> branching
-branching >> branch_a >> follow_branch_a >> join
-branching >> branch_false >> join
 ```
 
 ### Debug Airflow inside docker container using PyCharm
@@ -138,7 +98,7 @@ https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index
 
 https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html
 
-## Data
+## Data source
 
 https://www.mapillary.com/datasets
 

@@ -24,7 +24,7 @@ src/
 
 1.  `convert_data.ipynb` :  Generate the classes dictionnary `label_dict.json` and the whole (whole dataset) yolo annotation `/src/datasets/annotations_yolo/*` 
 2.  `split_data.ipynb` : Split the set in 3 sets - train, val(validation) & test sets `/src/datasets/dataset/{train,test,val}/{images,labels}`
-3.  `yolo.ipynb` : ***[ToDo complete here] The YOLO model***
+3.  `yolo.ipynb` : Train the model using YOLOv8 from Ultralytics
 
 
 # Notebook explanations

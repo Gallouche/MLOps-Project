@@ -8,8 +8,8 @@ from src.preprocessing.gcs_download import download_and_delete_files_from_gcs
 from src.preprocessing.parse_annotations import convert_all_to_yolo
 from src.preprocessing.gcs_upload import split_data, upload_new_data
 
-SERVICE_ACCOUNT_JSON_DOWNLOAD = "./dags/drop-bucket-key.json"
-SERVICE_ACCOUNT_JSON_UPLOAD = "./dags/mse-machledata-key.json"
+# SERVICE_ACCOUNT_JSON_DOWNLOAD = "./dags/drop-bucket-key.json"
+SERVICE_ACCOUNT_JSON = "./dags/mse-machledata-key.json"
 DATASET_FOLDER = "tmp/"
 
 
@@ -30,7 +30,7 @@ with DAG(
     download_and_delete_task = PythonOperator(
         task_id="download_images_and_annotations",
         python_callable=download_and_delete_files_from_gcs,
-        op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON_DOWNLOAD},
+        op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON},
     )
 
     convert_all_to_yolo_task = PythonOperator(
@@ -54,7 +54,7 @@ with DAG(
     upload_new_data_task = PythonOperator(
         task_id="upload_split_data",
         python_callable=upload_new_data,
-        op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON_DOWNLOAD}
+        op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON}
     )
 
     trigger_other_dag = TriggerDagRunOperator(
