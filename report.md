@@ -4,7 +4,7 @@ Ernst Tim, Gallandat Théo, Guidetti Laetitia, Küenzi Jean-Daniel, Perez Yohann
 
 ## Introduction
 
-This project aims to set up an AirFlow pipeline to perform all the steps of a Machine Learning project. The pipeline should allow to download the data, preprocess it, train a model and evaluate it. This approach allows to automate the process, make it reproducible and understand the advantages and disadvantages of using an AirFlow pipeline.
+This project aims to set up an AirFlow pipeline to perform all the steps of a Machine Learning project. The pipeline should allow to download the data, preprocess it, train a model and make prediction. This approach allows to automate the process, make it reproducible and understand the advantages and disadvantages of using an AirFlow pipeline.
 
 ### AirFlow
 
@@ -22,9 +22,7 @@ For this, the objective is to realize the following configuration:
 
 ![Diagram](images/project-diagram.png)
 
-This requires breaking down the process into several tasks that will be executed by the AirFlow pipeline. All tasks allow the completion of a complete Machine Learning project, from data retrieval to model evaluation through training. The pipeline will be composed of the following tasks:
-
-- TODO
+This requires breaking down the process into several tasks that will be executed by the AirFlow pipeline. All tasks allow the completion of a complete Machine Learning project, from data retrieval to model evaluation through training. The pipeline is divided into 3 main DAGs: Preprocessing, Training, and Deployment.
 
 ## Dataset
 
@@ -52,15 +50,13 @@ This DAG is responsible for preprocessing the data. It must retrieve the raw dat
 
 ![Preprocessing DAG](images/dag_preprocessing.png)
 
-#### Tasks
-
-##### Download data
+#### Task - Download data
 
 The `download_images_and_annotations` task is responsible for downloading the raw data (images and annotations in json format) from a cloud storage (here we are using a Google Cloud Storage bucket). It will then save the data locally in a temporary directory.
 The goal here was initially to have a trigger based on the arrival of new data in the cloud storage, but we did not manage to implement it.
 The data added to this "drop" bucket will be then used to retrain the model with new data.
 
-##### Annotations conversion
+#### Task - Annotations conversion
 
 The `convert_annotations_to_yolo` task is responsible to take the newly downloaded annotations and transform them into a format that can be used by the YOLO model.
 
@@ -78,15 +74,15 @@ Where:
 
 The annotations of the road signs are provided as bounding boxes in a JSON file. The bounding boxes are defined by the minimum and maximum value of the x and y coordinates. These values are not normalized and a lot of unnecessary information is present. It is therefore necessary to convert these annotations into a format usable by YOLO.
 
-##### Split data
+#### Task - Split data
 
 The `split_data` task is responsible for splitting the data into training, validation, and test sets. The data is divided into 80% training, 10% validation, and 10% test sets. The data is shuffled before being split and then saved locally waiting for the upload.
 
-##### Upload data
+#### Task - Upload data
 
 The `upload_split_data` task is responsible for uploading the processed annotations and images data to a post-processed bucket. The data is stored in a specific directory for each set (training, validation, test). This will be used by the training DAG to train the model.
 
-##### Trigger training
+#### Task - Trigger training
 
 The last `trigger_training` task is responsible for triggering the training DAG. This task is executed after the upload of the processed data. It allows to start the training of the model as soon as the data is ready.
 
@@ -98,24 +94,24 @@ This DAG is responsible for training the YOLOv8 model. It must retrieve the prep
 
 #### Task - Download data
 
-This task downloads the preprocessed dataset from the cloud. The dataset is separated into training, validation, and test sets.
+The `download_data_from_gcs` task downloads the preprocessed dataset from the cloud. The dataset is separated into training, validation, and test sets.
 
 #### Task - Remove old metrics
 
-This task removes the old metrics from the cloud to avoid conflicts with the new metrics.
+The `remove_train_output` task removes the old metrics from the cloud to avoid conflicts with the new metrics.
 
 #### Task - Train YOLOv8
 
-This task trains the YOLOv8 model on the preprocessed dataset. The YOLOv8 model is a real-time object detection algorithm based on a convolutional neural network. It is developed by Ultralytics. We use the pre-trained model and retrain it with the preprocessed dataset. Inside this task the YOLOv8 outputs a variety of files including the weights, metrics and some visualizations.
+The `train_yolov8_model` task trains the YOLOv8 model on the preprocessed dataset. The YOLOv8 model is a real-time object detection algorithm based on a convolutional neural network. It is developed by Ultralytics. We use the pre-trained model and retrain it with the preprocessed dataset. Inside this task the YOLOv8 outputs a variety of files including the weights, metrics and some visualizations.
 
 #### Task - Upload model
 
-This task uploads the trained model to the cloud. The model weights are stored in a file that can be used for deployment.
+The `upload_to_gcs` task uploads the trained model to the cloud. The model weights are stored in a file that can be used for deployment.
 All the files generated by the YOLOv8 model are uploaded to the cloud.
 
 #### Task - Trigger deployment
 
-This task triggers the deployment DAG to deploy the trained model.
+The `trigger_deployment` task triggers the deployment DAG to deploy the trained model.
 
 ### DAG - Deployment
 
@@ -125,37 +121,45 @@ This DAG is responsible for deploying the trained model. It must download the mo
 
 #### Task - Download weights
 
-This task downloads the latest and best-performing model weights from Google Cloud Storage to a local directory. These weights will be used to create a BentoML archive in subsequent steps.
+The `download_weights_from_gcs` task downloads the latest and best-performing model weights from Google Cloud Storage to a local directory. These weights will be used to create a BentoML archive in subsequent steps.
 
 #### Task - Build bentoml
 
-This task creates a new BentoML archive using the previously downloaded model weights. The archive packages the model and metadata necessary for deployment.
+The `build_bentoml` task creates a new BentoML archive using the previously downloaded model weights. The archive packages the model and metadata necessary for deployment.
 
 #### Task - Check bentoml container
 
-This task verifies if a BentoML container is already running on the host system. If a container is already running, it triggers the stop bentoml container task to avoid deployment conflicts. Otherwise, the stop task is skipped.
+The `check_bentoml_container` task verifies if a BentoML container is already running on the host system. If a container is already running, it triggers the stop bentoml container task to avoid deployment conflicts. Otherwise, the stop task is skipped.
 
 #### Task - Stop bentoml container
 
-This task stop the running BentoML container deployed on the host. This ensures there are no conflicting deployments before proceeding to deploy the updated model.
+The `stop_bentoml_container` task stop the running BentoML container deployed on the host. This ensures there are no conflicting deployments before proceeding to deploy the updated model.
 
 #### Task - Check docker image
 
-This task checks the host system for an existing Docker image of the BentoML deployment. If an image is found, it triggers the remove docker image task to ensure the latest version is used. Otherwise, the remove task is skipped.
+The `check_docker_image` task checks the host system for an existing Docker image of the BentoML deployment. If an image is found, it triggers the remove docker image task to ensure the latest version is used. Otherwise, the remove task is skipped.
 
 #### Task - Remove docker image
 
-This task removes the existing Docker image of the BentoML deployment from the host system. This ensures the latest version is used for deployment and to save storage space.
+The `rm_docker_image` task removes the existing Docker image of the BentoML deployment from the host system. This ensures the latest version is used for deployment and to save storage space.
 
 #### Task - Containerize bentoml
 
-This task builds a new Docker image using the latest BentoML archive. The resulting containerized application is ready for deployment and stored on the host.
+The `containerize_bentoml` task builds a new Docker image using the latest BentoML archive. The resulting containerized application is ready for deployment and stored on the host.
 
 #### Task - Run bentoml container
 
-This task deploys the newly built Docker image on the host system. By running the container independently, the deployment remains operational even if the Airflow service is unavailable.
+The `run_bentoml_container` task deploys the newly built Docker image on the host system. By running the container independently, the deployment remains operational even if the Airflow service is unavailable.
 
-- TODO : screen of the API + predicted image
+### Results
+
+At the end of the pipeline execution, we obtain a trained and deployed model. This model can be used to predict road signs in images. It is possible to test the model by giving it an image as input and visualizing the predictions.
+
+Example of the API that can be used to test the model:
+![API](images/api.png)
+
+Prediction result (bounding box around the road signs):
+![Prediction](images/predict.jpg)
 
 ## Added value of using an AirFlow pipeline
 
@@ -185,3 +189,7 @@ Among the difficulties encountered, we can mention the distribution of tasks amo
 There were also several problems with the Airflow documentation. Many points are difficult to find and when they are found, the examples provided are not always clear. For example, to do branching in a DAG, the example provided is very basic and does not allow to understand how to do more complex branching. It was necessary to browse the documentation for a long time to understand that the default value of a parameter had to be changed for the DAG to work correctly. A similar problem was encountered with the management of permissions for the different services used. It is done in an unusual and unintuitive way in AirFlow, and the documentation is also unclear on this point. As a result, we took time to configure the permissions correctly.
 
 ## Conclusion
+
+In conclusion, the use of an AirFlow pipeline for a Machine Learning project allows to automate the process, make it reproducible and scalable. It is a powerful tool that can be used for large-scale projects to save time and avoid human errors. However, it requires a good understanding of how AirFlow works and how to configure the different tasks.
+
+The use case chosen for this project is the training of a YOLOv8 model to detect road signs in images. This project was rather complex, which required the creation of a pipeline with many tasks. The choice of this use case was therefore relevant to test the capabilities of AirFlow. This allowed us to see the advantages and disadvantages of using this technology for a Machine Learning project.
