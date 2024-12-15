@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from datetime import datetime
 import os
 
@@ -39,10 +40,10 @@ with DAG(
                    "output_directory": DATASET_FOLDER + "annotations_yolo/"},
     )
 
-    list_files_task = PythonOperator(
-        task_id="list_files",
-        python_callable=list_files,
-    )
+    # list_files_task = PythonOperator(
+    #     task_id="list_files",
+    #     python_callable=list_files,
+    # )
 
     split_data_task = PythonOperator(
         task_id="split_data",
@@ -56,5 +57,11 @@ with DAG(
         op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON_DOWNLOAD}
     )
 
+    trigger_other_dag = TriggerDagRunOperator(
+        task_id='trigger_training',
+        trigger_dag_id='yolov8_training_pipeline',
+        wait_for_completion=False,
+    )
+
     # Set task dependencies
-    download_and_delete_task >> convert_all_to_yolo_task >> split_data_task >> upload_new_data_task
+    download_and_delete_task >> convert_all_to_yolo_task >> split_data_task >> upload_new_data_task >> trigger_other_dag
