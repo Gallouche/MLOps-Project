@@ -126,10 +126,10 @@ mkdir -p ./dags ./logs ./plugins ./config
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
 
-Si l'erreur `Error: [bentoml-cli] containerize failed: Backend docker is not healty` survient dans la tache `containerize_bentoml` il faut décommenter la ligne `group_add` dans le `docker-compose.yaml` et ajouter le numéro du groupe docker de votre system `cat /etc/group | grep docker`. Cela va vous donner une ligne sous la forme `docker:x:###:mon-user`, `###` est le numéro de groupe.
+Si l'erreur `Error: [bentoml-cli] containerize failed: Backend docker is not healty` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` il faut décommenter la ligne `group_add` dans le `docker-compose.yaml` et ajouter le numéro du groupe docker de votre system `cat /etc/group | grep docker`. Cela va vous donner une ligne sous la forme `docker:x:###:mon-user`, `###` est le numéro de groupe.
 
 #### Windows
-`Sous Windows` : si une erreur survient dans la `pipeline_serve` au moment de containerize l'image sur le script `setup.sh` :
+`Sous Windows` : si une erreur `INFO - #18 ERROR: process "/bin/sh -c /home/bentoml/bento/env/docker/setup_script" did not complete successfully: exit code: 127` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` :
 ```bash
 cd ./airflow/bentoml
 dos2unix setup.sh
