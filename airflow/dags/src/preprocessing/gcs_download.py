@@ -33,5 +33,5 @@ def download_and_delete_files_from_gcs(SERVICE_ACCOUNT_JSON):
         print(f"Downloaded: {blob.name} to {local_path}")
 
         # Delete the file from the bucket
-        # blob.delete()
-        # print(f"Deleted: {blob.name} from bucket {BUCKET_NAME}")
+        blob.delete()
+        print(f"Deleted: {blob.name} from bucket {BUCKET_NAME}")
