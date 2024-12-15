@@ -21,20 +21,20 @@ DATASET_FOLDER = "tmp/"
 
 # Define the DAG
 with DAG(
-    dag_id="download_and_process_files_from_gcs",
-    start_date=datetime(2024, 12, 12),
-    schedule_interval=None,  # Run manually
+    dag_id="preprocessing",
+    start_date=datetime(2023, 1, 1),
+    schedule_interval=None,
     catchup=False,
 ) as dag:
 
     download_and_delete_task = PythonOperator(
-        task_id="download_and_delete_files",
+        task_id="download_images_and_annotations",
         python_callable=download_and_delete_files_from_gcs,
         op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON_DOWNLOAD},
     )
 
     convert_all_to_yolo_task = PythonOperator(
-        task_id="convert_all_to_yolo",
+        task_id="convert_annotations_to_yolo",
         python_callable=convert_all_to_yolo,
         op_kwargs={"json_directory": DATASET_FOLDER + "annotations",
                    "output_directory": DATASET_FOLDER + "annotations_yolo/"},
@@ -52,7 +52,7 @@ with DAG(
     )
 
     upload_new_data_task = PythonOperator(
-        task_id="upload_new_data",
+        task_id="upload_split_data",
         python_callable=upload_new_data,
         op_kwargs={"SERVICE_ACCOUNT_JSON": SERVICE_ACCOUNT_JSON_DOWNLOAD}
     )
@@ -63,5 +63,4 @@ with DAG(
         wait_for_completion=False,
     )
 
-    # Set task dependencies
     download_and_delete_task >> convert_all_to_yolo_task >> split_data_task >> upload_new_data_task >> trigger_other_dag
