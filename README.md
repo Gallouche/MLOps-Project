@@ -44,6 +44,10 @@ docker compose up --build -d
 Then you can access the Airflow UI at http://localhost:8080/  
 Then you can access the Flower UI at http://localhost:5555/
 
+After visiting the Airflow UI, you will need to connect to it. The default username and password are `airflow` and `airflow` respectively.
+
+Then you can go to the preprocessing dag and trigger it.
+
 ### Stop and clean all
 
 For stop all containers and clean images and volumes:
