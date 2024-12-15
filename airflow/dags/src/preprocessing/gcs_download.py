@@ -35,9 +35,3 @@ def download_and_delete_files_from_gcs(SERVICE_ACCOUNT_JSON):
         # Delete the file from the bucket
         # blob.delete()
         # print(f"Deleted: {blob.name} from bucket {BUCKET_NAME}")
-
-    for root, dirs, files in os.walk(DATASET_FOLDER):
-        for directory in dirs:
-            continue
-        for file in files:
-            print(f"File found: {file}")
