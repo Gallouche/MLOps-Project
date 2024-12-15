@@ -188,6 +188,17 @@ Among the difficulties encountered, we can mention the distribution of tasks amo
 
 There were also several problems with the Airflow documentation. Many points are difficult to find and when they are found, the examples provided are not always clear. For example, to do branching in a DAG, the example provided is very basic and does not allow to understand how to do more complex branching. It was necessary to browse the documentation for a long time to understand that the default value of a parameter had to be changed for the DAG to work correctly. A similar problem was encountered with the management of permissions for the different services used. It is done in an unusual and unintuitive way in AirFlow, and the documentation is also unclear on this point. As a result, we took time to configure the permissions correctly.
 
+The difficulty above also led us to not deploy our pipeline in the cloud as initially planned.
+
+## Further improvements
+
+Initially we wanted to showcase a continuous learning approach in our pipeline. The goal was to have a drop bucket that would trigger the pipeline upon data addition. This would allow to have a more flexible and dynamic pipeline that would not require manual intervention.  
+Continuous learning also meant that we would require a way to detect newly added data to the processed bucket, allowing to retrain only on new data. We were planning to use DVC to manage this versioning of the data but we did not manage to implement it.
+
+In a technical aspect, we could improve the code by factorizing some part related to Google Cloud Storage. Also, it's not a good practice to store the credentials in the code as we did to simplify. We should use a secret manager or some environment variables to store them.
+
+Last, we could improve the reproducibility of the pipeline by having some deployments scripts that could be triggered based on some git commit or merge for example. This would allow to have a complete CI/CD pipeline.
+
 ## Conclusion
 
 In conclusion, the use of an AirFlow pipeline for a Machine Learning project allows to automate the process, make it reproducible and scalable. It is a powerful tool that can be used for large-scale projects to save time and avoid human errors. However, it requires a good understanding of how AirFlow works and how to configure the different tasks.
