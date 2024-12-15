@@ -6,57 +6,6 @@ This project is a simple workflow to demonstrate learning about MLOps. It will u
 
 ![diag](images/project-diagram.png)
 
-## Installation
-
-### Option 1: Install with Flexible Dependencies
-This method installs the project using the dependencies specified in `pyproject.toml`, allowing `pip` to resolve the latest compatible versions.
-
-1. **Clone the Repository**:
-2. **Install the requirements**:
-
-   ```bash
-   pip install .
-   ```
-
-### Option 2: Install with Exact Versions (Recommended for Production)
-
-For a consistent environment with exact dependency versions, use the `requirements.txt` file.
-
-1. **Install from `requirements.txt`**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Adding Dependencies
-
-To add or update dependencies in your project, follow these steps:
-
-1. **Edit `pyproject.toml`**:
-   Open the `pyproject.toml` file and add the new dependency under the `dependencies` section. For example:
-
-   ```toml
-   [project]
-   dependencies = [
-       "numpy>=1.21.0",
-       "pandas>=1.3.0",
-       "new-package>=1.0.0"
-   ]
-   ```
-
-2. **Install the New Dependency**:
-   Run the following command to install the new or updated dependency:
-
-   ```bash
-   pip install .
-   ```
-
-3. **Update `requirements.txt`** (Optional but Recommended):
-   To lock the current versions of all dependencies for consistency, update `requirements.txt` by running:
-
-   ```bash
-   pip freeze > requirements.txt
-   ```
 ### Docker & Docker compose version
 
 Pour pouvoir run la pipeline il faut avoir au minimum comme version docker
@@ -83,19 +32,21 @@ l'image aura tout les packages necessaires pour lancer les dags
 ```bash
 cd ./airflow
 docker-compose up --build -d
-# docker-compose up flower # start airflow and flower monitoring platform 
+# docker-compose up flower # start airflow and flower monitoring platform
 ```
 
 ou pour la nouvelle CLI de docker-compose
+
 ```bash
 cd ./airflow
 docker compose up --build -d
 ```
 
 Then you can access the Airflow UI at http://localhost:8080/  
-Then you can access the Flower UI at http://localhost:5555/  
+Then you can access the Flower UI at http://localhost:5555/
 
 ### Stop and clean all
+
 Pour stopper tout les containers et clean les images et les volumes:
 
 ```bash
@@ -118,8 +69,11 @@ docker rmi yolo_v8:latest
 ```
 
 ### Troubleshoothing
+
 #### Linux
+
 `Sous Linux` : il peut être nécessaire de changer la variable `AIRFLOW_UID` qui se trouve dans `airflow/.env`. Il faut également créer les répertoires de base pour en être propriétaire s'ils n'existent pas déjà :
+
 ```bash
 cd ./airflow
 mkdir -p ./dags ./logs ./plugins ./config
@@ -129,7 +83,9 @@ echo -e "AIRFLOW_UID=$(id -u)" > .env
 Si l'erreur `Error: [bentoml-cli] containerize failed: Backend docker is not healty` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` il faut décommenter la ligne `group_add` dans le `docker-compose.yaml` et ajouter le numéro du groupe docker de votre system `cat /etc/group | grep docker`. Cela va vous donner une ligne sous la forme `docker:x:###:mon-user`, `###` est le numéro de groupe.
 
 #### Windows
+
 `Sous Windows` : si une erreur `INFO - #18 ERROR: process "/bin/sh -c /home/bentoml/bento/env/docker/setup_script" did not complete successfully: exit code: 127` survient dans la `pipeline_serve` dans la tache `containerize_bentoml` :
+
 ```bash
 cd ./airflow/bentoml
 dos2unix setup.sh
@@ -175,9 +131,11 @@ branching >> branch_false >> join
 ```
 
 ### Debug Airflow inside docker container using PyCharm
+
 https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#debug-airflow-inside-docker-container-using-pycharm
 
 ## Airflow useful links
+
 https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/datasets.html
 
 ## Data
