@@ -62,20 +62,25 @@ The annotations of the road signs are provided as bounding boxes in a JSON file.
 ### Task - Trigger deployment
 
 ### Task - Download weights
-
-### Task - Bentoml
+This task downloads the latest and best-performing model weights from Google Cloud Storage to a local directory. These weights will be used to create a BentoML archive in subsequent steps.
 
 #### Task - Build bentoml
+This task creates a new BentoML archive using the previously downloaded model weights. The archive packages the model and metadata necessary for deployment.
 
 #### Task- Check bentoml container
+This task verifies if a BentoML container is already running on the host system. If an active deployment exists, it stops the container to ensure a clean deployment later in the pipeline.
 
 #### Task - Stop bentoml container
+This task stop the running BentoML container deployed on the host. This ensures there are no conflicting deployments before proceeding to deploy the updated model.
 
 #### Task - Check docker image
+This task checks the host system for an existing Docker image of the BentoML deployment. If an image is found, it is removed to save storage space and ensure the latest version is used.
 
 #### Task - Containerize bentoml
+This task builds a new Docker image using the latest BentoML archive. The resulting containerized application is ready for deployment and stored on the host.
 
 #### Task - Run bentoml container
+This task deploys the newly built Docker image on the host system. By running the container independently, the deployment remains operational even if the Airflow service is unavailable.
 
 - TODO : screen of the API + predicted image
 
