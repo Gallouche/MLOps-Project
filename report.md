@@ -38,11 +38,20 @@ Image example:
 
 ## Pipeline description
 
-### Task - Download data
+The pipeline is separated into 3 main DAGs:
+- Preprocessing
+- Training
+- Deployment
 
-### Task - Remove old metrics
+This separation allows to better organize the tasks and improve the readability of the code. Each DAG is composed of several tasks that are executed in a specific order. In our case, the tasks are executed sequentially, with dependencies between them.
 
-### Task - Preprocessing
+### DAG - Preprocessing
+
+This DAG is responsible for preprocessing the data. It must retrieve the raw data, preprocess it and save the results obtained. The tasks are as follows:
+
+- TODO : screen of the DAG and the tasks
+
+#### Task - Preprocessing
 
 For training a YOLO model, it is necessary to have annotations in a specific format. Yolo uses the following format in a txt file:
 ```
@@ -55,26 +64,46 @@ Where:
 
 The annotations of the road signs are provided as bounding boxes in a JSON file. The bounding boxes are defined by the minimum and maximum value of the x and y coordinates. These values are not normalized and a lot of unnecessary information is present. It is therefore necessary to convert these annotations into a format usable by YOLO.
 
-### Task - Train YOLOv8
 
-### Task - Upload model
+### DAG - Training
 
-### Task - Trigger deployment
+This DAG is responsible for training the YOLOv8 model. It must retrieve the preprocessed data, train the model and save the results obtained. The tasks are as follows:
 
-### Task - Download weights
+![Training DAG](images/dag_training.png)
+
+#### Task - Download data
+
+#### Task - Remove old metrics
+
+#### Task - Train YOLOv8
+
+#### Task - Upload model
+
+#### Task - Trigger deployment
+
+### DAG - Deployment
+
+This DAG is responsible for deploying the trained model. It must download the model weights, build a BentoML archive, containerize the model, and deploy it. The tasks are as follows:
+
+![Deployment DAG](images/dag_deployement.png)
+
+#### Task - Download weights
 This task downloads the latest and best-performing model weights from Google Cloud Storage to a local directory. These weights will be used to create a BentoML archive in subsequent steps.
 
 #### Task - Build bentoml
 This task creates a new BentoML archive using the previously downloaded model weights. The archive packages the model and metadata necessary for deployment.
 
-#### Task- Check bentoml container
-This task verifies if a BentoML container is already running on the host system. If an active deployment exists, it stops the container to ensure a clean deployment later in the pipeline.
+#### Task - Check bentoml container
+This task verifies if a BentoML container is already running on the host system. If a container is already running, it triggers the stop bentoml container task to avoid deployment conflicts. Otherwise, the stop task is skipped.
 
 #### Task - Stop bentoml container
 This task stop the running BentoML container deployed on the host. This ensures there are no conflicting deployments before proceeding to deploy the updated model.
 
 #### Task - Check docker image
-This task checks the host system for an existing Docker image of the BentoML deployment. If an image is found, it is removed to save storage space and ensure the latest version is used.
+This task checks the host system for an existing Docker image of the BentoML deployment. If an image is found, it triggers the remove docker image task to ensure the latest version is used. Otherwise, the remove task is skipped.
+
+#### Task - Remove docker image
+This task removes the existing Docker image of the BentoML deployment from the host system. This ensures the latest version is used for deployment and to save storage space.
 
 #### Task - Containerize bentoml
 This task builds a new Docker image using the latest BentoML archive. The resulting containerized application is ready for deployment and stored on the host.
