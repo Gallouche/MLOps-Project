@@ -197,6 +197,8 @@ Continuous learning also meant that we would require a way to detect newly added
 
 In a technical aspect, we could improve the code by factorizing some part related to Google Cloud Storage. Also, it's not a good practice to store the credentials in the code as we did to simplify. We should use a secret manager or some environment variables to store them.
 
+An improvement to the deployment pipeline could be to allow deploying a specific tag of a BentoML archive. Currently, we always containerize using the latest bentoml archive (tag:latest). By specifying and deploying a precise tag, we could ensure better traceability and control over the versions being used in production.
+
 Last, we could improve the reproducibility of the pipeline by having some deployments scripts that could be triggered based on some git commit or merge for example. This would allow to have a complete CI/CD pipeline.
 
 ## Conclusion
