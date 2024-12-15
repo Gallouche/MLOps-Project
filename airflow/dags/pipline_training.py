@@ -2,6 +2,9 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.sensors.external_task_sensor import ExternalTaskSensor
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+
 from google.cloud import storage
 import os
 import yaml
@@ -11,6 +14,9 @@ from ultralytics import YOLO
 BUCKET_NAME = "mse_mapillary"
 DATASET_FOLDER = "/tmp"
 SERVICE_ACCOUNT_JSON = "./dags/mse-machledata-key.json"
+
+DEPENDENCY_DAG_ID="serve_pipeline"
+DEPENDENCY_TASK_ID="containerize_bentoml"
 
 # Authentication setup
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SERVICE_ACCOUNT_JSON
@@ -85,7 +91,6 @@ with DAG(
     tags=["yolo", "training", "gcs"],
 ) as dag:
     
-
     download_task = PythonOperator(
         task_id="download_data_from_gcs",
         python_callable=download_data_from_gcs ,
@@ -106,4 +111,12 @@ with DAG(
         python_callable=upload_to_gcs,
     )
 
-    download_task >> remove_train_output >> train_task >> upload_task
+    trigger_other_dag = TriggerDagRunOperator(
+      task_id='trigger_deployement',
+      trigger_dag_id=DEPENDENCY_DAG_ID,
+      wait_for_completion=False, 
+      reset_dag_run=True,
+      dag=dag,
+    )
+
+download_task >> remove_train_output >> train_task >> upload_task >> trigger_other_dag
